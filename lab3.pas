@@ -1,15 +1,12 @@
 ﻿﻿program lab3;
-type mas=array [0..3]of double;
 var
-  xBegin,yBegin,zBegin,xEnd,M:double;
-  xOld,yOld,zOld:double;
-  xNew,yNew,zNew:double;
   xWrite,rho:double;
   i,j:integer;
   eps,h:double;
   k1_new,k2_new,l1_new,l2_new:double;
   p:double;
-
+  A1,A2:double;
+  det_G:double;
 
 function yPrime(x,y,z:double):double;
  begin
@@ -20,7 +17,7 @@ function zPrime(x,y,z:double):double;
    zPrime:=2*y + z;
  end;
 
- procedure rkm(h0,x0,y0,z0,k1_new,k2_new,l1_new,l2_new:double;var xN,yN,zN:double);
+procedure rkm(h0,x0,y0,z0,k1_new,k2_new,l1_new,l2_new:double;var xN,yN,zN:double);
  var k1,k2:double;
      a1,a2,a3:double;
      l1,l2:double;
@@ -50,6 +47,10 @@ function zPrime(x,y,z:double):double;
    F[1]:=k2_new - k2;
    F[2]:=l1_new - l1;
    F[3]:=l2_new - l2;
+   
+   A1:= a1;
+   A2:= a2;
+  
 
  end;
 
@@ -60,15 +61,53 @@ BEGIN
 
 END;
 
-procedure fullfilM();
+procedure G(h:double;);
 var m,n:INTEGER;
-matrix:array[1..5,1..5] of DOUBLE;
+ma:array[1..4,1..4] of DOUBLE;
+det,tmp_d1,tmp_d2,tmp_d3,tmp_d4:double;
 BEGIN
-  for n:= 0 to 4 do
-    for m:=0 to 4 do
-       BEGIN
-         matrix[n,m]:= kPrime();
-       END;
+for m := 1 to 4 do
+  for  n:= 1 to 4 do
+  begin
+    if (m = n){
+    ma[m,n]:= 1 - (h/4);
+    }else{
+      ma[1,2]:= -1 * A2 * h;
+      ma[1,3]:= -1 * 0.5 * h;
+      ma[1,4]:= -2 * A2 * h;
+
+      ma[2,1]:= ma[1,2];
+      ma[2,3]:= ma[1,4];
+      ma[2,4]:= ma[1,3];
+
+      m[3,1]:= -1 * (zn + (h/4)*L1*A2*h*L2)*(h/2);
+      m[3,2]:= -1 * (zn + (h/4)*L1*A2*h*L2)*(A2*h/2);
+      m[3,4]:= ma[1,2];
+      
+      ma[4,1]:= -2 * (zn + (h/4)*L1*A2*h*L2)*A2*h;
+      ma[4,2]:= ma[4,1];
+      ma[4,3]:= m[3,4];
+
+    }    
+  end;
+  //транспонирование матрицы
+  for m := 1 to 4 do
+  for  n:= 1 to 4 do
+  begin
+  if(m <> n){
+      ma[m,n]:= ma[n,m];
+  }
+  end;
+
+ tmp_d1:= ma[1,1]*(ma[2,2]*ma[3,3]*ma[4,4] + ma[2,3]*ma[3,4]*ma[4,2] + ma[2,4]+ma[3,2]+ma[4,3] - ma[2,4]*ma[3,3]*ma[4,2] - ma[2,2]*ma[3,4]*ma[4,3] - ma[4,4]*ma[2,3]*ma[3,2]);
+ tmp_d2:= ma[1,2]*(ma[2,1]*ma[3,3]*ma[4,4] + ma[2,4]*ma[3,1]*ma[4,3] + ma[4,1]+ma[2,3]+ma[3,4] - ma[2,4]*ma[3,3]*ma[4,1] - ma[2,1]*ma[3,4]*ma[4,3] - ma[4,4]*ma[2,3]*ma[3,1]);
+ tmp_d3:= ma[1,3]*(ma[2,1]*ma[3,2]*ma[4,4] + ma[2,4]*ma[3,1]*ma[4,2] + ma[4,1]+ma[2,2]+ma[3,4] - ma[2,4]*ma[3,2]*ma[4,1] - ma[2,1]*ma[3,4]*ma[4,2] - ma[4,4]*ma[2,2]*ma[3,1]);
+ tmp_d4:= ma[1,4]*(ma[2,1]*ma[3,2]*ma[4,3] + ma[2,2]*ma[3,3]*ma[4,1] + ma[2,3]+ma[3,1]+ma[4,2] - ma[2,3]*ma[3,2]*ma[4,1] - ma[2,1]*ma[3,3]*ma[4,2] - ma[4,3]*ma[2,3]*ma[3,1]);
+
+ det:= tmp_d1-tmp_d2+tmp_d3-tmp_d4; // детерминант матрицы G
+
+ det_G:=det;
+
 END;
 procedure print(x,y,z:double;var p:double);
 var i:integer;
@@ -84,10 +123,10 @@ end;
 
 
 
-  begin
+begin
 
 
 
-    end;
 
-  end.
+
+end.
