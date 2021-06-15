@@ -34,7 +34,7 @@ function zPrime(x,y,z:double):double;
    k1:= yPrime(x0,y0,z0);
    l1:= zPrime(x0,y0,z0);
    k2:= yPrime(x0+h3,y0+h3*k1,z0+h3*l1);
-   l2:= zPrime(x0+h3,y0+h3*k1,z0+h3*l1); //scl
+   l2:= zPrime(x0+h3,y0+h3*k1,z0+h3*l1); 
 
    k1_new:= yPrime(x0+h0*a1, y0+h0*a3*k1+a2*h0*k2, z0+a3*h*l1+a2*h0*l2);
    l1_new:= zPrime(x0+h0*a1, y0+h0*a3*k1+a2*h0*k2, z0+a3*h*l1+a2*h0*l2);
@@ -50,7 +50,7 @@ function zPrime(x,y,z:double):double;
    F[1]:=k2_new - k2;
    F[2]:=l1_new - l1;
    F[3]:=l2_new - l2;
- //////////////////
+
  end;
 
 
