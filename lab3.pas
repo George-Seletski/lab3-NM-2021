@@ -7,6 +7,8 @@ var
   p:double;
   A1,A2:double;
   det_G:double;
+  zN,yN,xN:double;
+  h0,x0,y0,z0:double;
 
 function yPrime(x,y,z:double):double;
  begin
@@ -56,12 +58,14 @@ procedure rkm(h0,x0,y0,z0,k1_new,k2_new,l1_new,l2_new:double;var xN,yN,zN:double
 
 
 
-procedure G(h:double;);
+procedure G(h0:double;);
 var m,n:INTEGER;
-ma:array[1..4,1..4] of DOUBLE;
-det,tmp_d1,tmp_d2,tmp_d3,tmp_d4:double;
+    ma:array[1..4,1..4] of DOUBLE;
+    det,tmp_d1,tmp_d2,tmp_d3,tmp_d4:double;
+    h:double;
 
 BEGIN //заполняем матрицу G
+h:=0.05;
 for m := 1 to 4 do
   for  n:= 1 to 4 do
   begin
