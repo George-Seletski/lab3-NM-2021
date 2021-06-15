@@ -11,7 +11,9 @@ var
   x,y,z:mas;
   K:double;
   K:array[1..4] of double;
+  K_old:array[1..4] of double;
   F:array[1..4] of double;
+  res:double;
   s:int;
 
 function yPrime(x,y,z:double):double;
@@ -57,11 +59,17 @@ procedure rkm(h0,x0,y0,z0:double;var xN,yN,zN:double);
    K[1]:= k1_new;
    K[2]:= k2_new;
    K[3]:= l1_new;
-   K[4]:=l2_new;
+   K[4]:= l2_new;
+
+   K_old[1]:= k1;
+   K_old[2]:= k2;
+   K_old[3]:= l1;
+   K_old[4]:= l2;
 
    A1:= a1;
    A2:= a2;
   
+   res:= max(abs(K[1]-K_old[1]),abs(K[2]-K_old[2]),abs(K[3]-K_old[3]),abs(K[4]-K_old[4]));
 
  end;
 
@@ -126,13 +134,14 @@ for m := 1 to 4 do
 END;
 
 
+
 procedure print(x,y,z:double;var p:double);
 var i:integer;
-    eps:double =0.00001;
+    eps:double =0.001;
 begin
-  if(abs(x-p)<eps)then
+  if(res<=eps)then
     begin
-      writeln(x:10:4,'  ',y:10:4,'  ',z:10:4);
+      writeln(K[1]:10:4,'  ',K[2]:10:4,'  ',K[3]:10:4,' ' K[4]:10:4);
       //writeln('(',x:0:4,'; ',y,') ');//,z);
       p:=p+0.05;
     end;
@@ -155,6 +164,7 @@ begin
    z[0]:=zBegin;
    n:=trunc(xEnd/h);
    rkm(h,x[0],y[0],z[0],x[1],y[1],z[1]);
+
    
      
      
