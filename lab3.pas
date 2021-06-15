@@ -55,11 +55,6 @@ procedure rkm(h0,x0,y0,z0,k1_new,k2_new,l1_new,l2_new:double;var xN,yN,zN:double
  end;
 
 
-procedure kPrime();
-var
-BEGIN
-
-END;
 
 procedure G(h:double;);
 var m,n:INTEGER;
