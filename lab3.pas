@@ -1,14 +1,18 @@
 ﻿﻿program lab3;
+type mas=array [0..3]of double;
 var
-  xWrite,rho:double;
-  i,j:integer;
-  eps,h:double;
+  xBegin,yBegin,zBegin,xEnd:double;
+  h0,eps,h:double;
   k1_new,k2_new,l1_new,l2_new:double;
   p:double;
   A1,A2:double;
-  det_G:double;
+  //det_G:double;
   zN,yN,xN:double;
-  h0,x0,y0,z0:double;
+  x,y,z:mas;
+  K:double;
+  K:array[1..4] of double;
+  F:array[1..4] of double;
+  s:int;
 
 function yPrime(x,y,z:double):double;
  begin
@@ -19,7 +23,7 @@ function zPrime(x,y,z:double):double;
    zPrime:=2*y + z;
  end;
 
-procedure rkm(h0,x0,y0,z0,k1_new,k2_new,l1_new,l2_new:double;var xN,yN,zN:double); 
+procedure rkm(h0,x0,y0,z0:double;var xN,yN,zN:double); 
  var k1,k2:double;
      a1,a2,a3:double;
      l1,l2:double;
@@ -45,11 +49,16 @@ procedure rkm(h0,x0,y0,z0,k1_new,k2_new,l1_new,l2_new:double;var xN,yN,zN:double
    zN:=(h0/2)*(l1_new+l2_new)+z0;
 
 
-   F[0]:=k1_new - k1;
-   F[1]:=k2_new - k2;
-   F[2]:=l1_new - l1;
-   F[3]:=l2_new - l2;
+   F[1]:=k1_new - k1;
+   F[2]:=k2_new - k2;
+   F[3]:=l1_new - l1;
+   F[4]:=l2_new - l2;
    
+   K[1]:= k1_new;
+   K[2]:= k2_new;
+   K[3]:= l1_new;
+   K[4]:=l2_new;
+
    A1:= a1;
    A2:= a2;
   
@@ -58,12 +67,12 @@ procedure rkm(h0,x0,y0,z0,k1_new,k2_new,l1_new,l2_new:double;var xN,yN,zN:double
 
 
 
-procedure G(h0:double;);
+function G(zn:double):double;
 var m,n:INTEGER;
     ma:array[1..4,1..4] of DOUBLE;
     det,tmp_d1,tmp_d2,tmp_d3,tmp_d4:double;
     h:double;
-
+   
 BEGIN //заполняем матрицу G
 h:=0.05;
 for m := 1 to 4 do
@@ -86,11 +95,11 @@ for m := 1 to 4 do
           ma[2,3]:= ma[1,4];
           ma[2,4]:= ma[1,3];
 
-          m[3,1]:= -1 * (zN + (h/4)*L1*A2*h*L2)*(h/2);
-          m[3,2]:= -1 * (zN + (h/4)*L1*A2*h*L2)*(A2*h/2);
+          m[3,1]:= -1 * (zn + (h/4)*L1*A2*h*L2)*(h/2);
+          m[3,2]:= -1 * (zn + (h/4)*L1*A2*h*L2)*(A2*h/2);
           m[3,4]:= ma[1,2];
           
-          ma[4,1]:= -2 * (zN + (h/4)*L1*A2*h*L2)*A2*h;
+          ma[4,1]:= -2 * (zn + (h/4)*L1*A2*h*L2)*A2*h;
           ma[4,2]:= ma[4,1];
           ma[4,3]:= m[3,4];
 
@@ -112,9 +121,11 @@ for m := 1 to 4 do
 
  det:= tmp_d1-tmp_d2+tmp_d3-tmp_d4; // детерминант матрицы G
 
- det_G:=det;
+ G:=det;
 
 END;
+
+
 procedure print(x,y,z:double;var p:double);
 var i:integer;
     eps:double =0.00001;
@@ -130,10 +141,23 @@ end;
 
 
 begin
+xEnd:= 1;
+xBegin:=0;
+y0:=2;
+x0:=0;
+z0:=1;
+p:=0;
+for s:=2 to 4 do
+begin
+   h0:= exp(-s*ln(10));
+   x[0]:=xBegin;
+   y[0]:=yBrgin;
+   z[0]:=zBegin;
+   n:=trunc(xEnd/h);
+   rkm(h,x[0],y[0],z[0],x[1],y[1],z[1]);
+   
+     
+     
 
-
-
-
-
-
+end;
 end.
