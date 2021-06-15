@@ -1,4 +1,4 @@
-﻿﻿program lab3;
+﻿program lab3;
 type mas=array [0..3]of double;
 var
   xBegin,yBegin,zBegin,xEnd:double;
@@ -9,6 +9,7 @@ var
   tmp:array [1..4] of double;
   zN,yN,xN:double;
   x,y,z:mas;
+  K:double;
   K:array[1..4] of double;
   K_old:array[1..4] of double;
   F:array[1..4] of double;
@@ -48,25 +49,26 @@ procedure rkm(h0,x0,y0,z0:double;var xN,yN,zN:double);
    xN:=x0+h0;
    yN:=(h0/2)*(k1_new+k2_new)+y0;
    zN:=(h0/2)*(l1_new+l2_new)+z0;
-   
-   //определяем сначала матрицу G^T а потом произведение G^T * Ф^T
-   G(zN);
 
-   //K(s)
+
+   F[1]:=k1_new - k1;
+   F[2]:=k2_new - k2;
+   F[3]:=l1_new - l1;
+   F[4]:=l2_new - l2;
+   
+   K[1]:= k1_new;
+   K[2]:= k2_new;
+   K[3]:= l1_new;
+   K[4]:= l2_new;
+
    K_old[1]:= k1;
    K_old[2]:= k2;
    K_old[3]:= l1;
    K_old[4]:= l2;
 
-  //K(s+1)
-   K[1]:= K_old[1] - tmp[1];
-   K[2]:= K_old[2] - tmp[2];
-   K[3]:= K_old[3] - tmp[3];
-   K[4]:= K_old[4] - tmp[4];
    A1:= a1;
    A2:= a2;
   
-   // |K(s+1) - K(s)|
    res:= max(abs(K[1]-K_old[1]),abs(K[2]-K_old[2]),abs(K[3]-K_old[3]),abs(K[4]-K_old[4]));
 
  end;
@@ -76,6 +78,8 @@ procedure rkm(h0,x0,y0,z0:double;var xN,yN,zN:double);
 function G(zn:double);
 var m,n:INTEGER;
     ma:array[1..4,1..4] of DOUBLE;
+    
+    //det,tmp_d1,tmp_d2,tmp_d3,tmp_d4:double;
     h:double;
    
 BEGIN //заполняем матрицу G
@@ -120,12 +124,20 @@ for m := 1 to 4 do
 
   end;
 
- // G^T * Ф^T
   tmp[1]:=ma[1,1]*F[1] + ma[1,2]*F[2] + ma[1,3]*F[3] + ma[1,4]*F[4];
   tmp[2]:=ma[2,1]*F[1] + ma[2,2]*F[2] + ma[2,3]*F[3] + ma[2,4]*F[4];
   tmp[3]:=ma[3,1]*F[1] + ma[3,2]*F[2] + ma[3,3]*F[3] + ma[3,4]*F[4];
   tmp[4]:=ma[4,1]*F[1] + ma[4,2]*F[2] + ma[4,3]*F[3] + ma[4,4]*F[4];
+{
+ tmp_d1:= ma[1,1]*(ma[2,2]*ma[3,3]*ma[4,4] + ma[2,3]*ma[3,4]*ma[4,2] + ma[2,4]+ma[3,2]+ma[4,3] - ma[2,4]*ma[3,3]*ma[4,2] - ma[2,2]*ma[3,4]*ma[4,3] - ma[4,4]*ma[2,3]*ma[3,2]);
+ tmp_d2:= ma[1,2]*(ma[2,1]*ma[3,3]*ma[4,4] + ma[2,4]*ma[3,1]*ma[4,3] + ma[4,1]+ma[2,3]+ma[3,4] - ma[2,4]*ma[3,3]*ma[4,1] - ma[2,1]*ma[3,4]*ma[4,3] - ma[4,4]*ma[2,3]*ma[3,1]);
+ tmp_d3:= ma[1,3]*(ma[2,1]*ma[3,2]*ma[4,4] + ma[2,4]*ma[3,1]*ma[4,2] + ma[4,1]+ma[2,2]+ma[3,4] - ma[2,4]*ma[3,2]*ma[4,1] - ma[2,1]*ma[3,4]*ma[4,2] - ma[4,4]*ma[2,2]*ma[3,1]);
+ tmp_d4:= ma[1,4]*(ma[2,1]*ma[3,2]*ma[4,3] + ma[2,2]*ma[3,3]*ma[4,1] + ma[2,3]+ma[3,1]+ma[4,2] - ma[2,3]*ma[3,2]*ma[4,1] - ma[2,1]*ma[3,3]*ma[4,2] - ma[4,3]*ma[2,3]*ma[3,1]);
 
+ det:= tmp_d1-tmp_d2+tmp_d3-tmp_d4; // детерминант матрицы G
+
+ G:=det;
+}
 
 END;
 
@@ -138,6 +150,7 @@ begin
   if(res<=eps)then
     begin
       writeln(K[1]:10:4,'  ',K[2]:10:4,'  ',K[3]:10:4,' ' K[4]:10:4);
+      //writeln('(',x:0:4,'; ',y,') ');//,z);
       p:=p+0.05;
     end;
 end;
