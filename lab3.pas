@@ -131,14 +131,15 @@ END;
 
 
 
-procedure print(x,y,z:double;var p:double);
+procedure print(x,y,z:double);
 var i:integer;
     eps:double =0.001;
 begin
   if(res<=eps)then
     begin
-      writeln(K[1]:10:4,'  ',K[2]:10:4,'  ',K[3]:10:4,' ' K[4]:10:4);
-      p:=p+0.05;
+     // writeln(K[1]:10:4,'  ',K[2]:10:4,'  ',K[3]:10:4,' ' K[4]:10:4);
+      writeln(x:10:4,'  ',y:10:4,'  ',z:10:4);
+      //p:=p+0.05;
     end;
 end;
 
@@ -159,6 +160,12 @@ begin
    z[0]:=zBegin;
    n:=trunc(xEnd/h);
    rkm(h,x[0],y[0],z[0],x[1],y[1],z[1]);
+   rkm(h,x[1],y[1],z[1],x[2],y[2],z[2]);
+   rkm(h,x[2],y[2],z[2],x[3],y[3],z[3]);
+   print(x[0],y[0],z[0]);
+   print(x[1],y[1],z[1]);
+   print(x[2],y[2],z[2]);
+   print(x[3],y[3],z[3]);
 
    
      
