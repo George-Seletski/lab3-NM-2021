@@ -17,7 +17,7 @@ function zPrime(x,y,z:double):double;
    zPrime:=2*y + z;
  end;
 
-procedure rkm(h0,x0,y0,z0,k1_new,k2_new,l1_new,l2_new:double;var xN,yN,zN:double);
+procedure rkm(h0,x0,y0,z0,k1_new,k2_new,l1_new,l2_new:double;var xN,yN,zN:double); 
  var k1,k2:double;
      a1,a2,a3:double;
      l1,l2:double;
@@ -33,10 +33,10 @@ procedure rkm(h0,x0,y0,z0,k1_new,k2_new,l1_new,l2_new:double;var xN,yN,zN:double
    k2:= yPrime(x0+h3,y0+h3*k1,z0+h3*l1);
    l2:= zPrime(x0+h3,y0+h3*k1,z0+h3*l1); 
 
-   k1_new:= yPrime(x0+h0*a1, y0+h0*a3*k1+a2*h0*k2, z0+a3*h*l1+a2*h0*l2);
-   l1_new:= zPrime(x0+h0*a1, y0+h0*a3*k1+a2*h0*k2, z0+a3*h*l1+a2*h0*l2);
-   k2_new:= yPrime(x0+h0*a1, y0+h0*a2*k1+a3*h0*k2, z0+a2*h*l1+a3*h0*l2);
-   l1_new:= zPrime(x0+h0*a1, y0+h0*a3*k1+a2*h0*k2, z0+a3*h*l1+a2*h0*l2);
+   k1_new:= yPrime(x0+h0*a1, y0+h0*a3*k1+a2*h0*k2, z0+a3*h*l1+a2*h0*l2); // k1 = f1
+   l1_new:= zPrime(x0+h0*a1, y0+h0*a3*k1+a2*h0*k2, z0+a3*h*l1+a2*h0*l2); // l1 = g1
+   k2_new:= yPrime(x0+h0*a1, y0+h0*a2*k1+a3*h0*k2, z0+a2*h*l1+a3*h0*l2); // k2 = f2
+   l1_new:= zPrime(x0+h0*a1, y0+h0*a3*k1+a2*h0*k2, z0+a3*h*l1+a2*h0*l2); // l2 = g2
 
    xN:=x0+h0;
    yN:=(h0/2)*(k1_new+k2_new)+y0;
@@ -65,7 +65,8 @@ procedure G(h:double;);
 var m,n:INTEGER;
 ma:array[1..4,1..4] of DOUBLE;
 det,tmp_d1,tmp_d2,tmp_d3,tmp_d4:double;
-BEGIN
+
+BEGIN //заполняем матрицу G
 for m := 1 to 4 do
   for  n:= 1 to 4 do
   begin
