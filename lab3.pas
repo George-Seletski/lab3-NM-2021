@@ -6,7 +6,7 @@ var
   k1_new,k2_new,l1_new,l2_new:double;
   p:double;
   A1,A2:double;
-  //det_G:double;
+  tmp_G:double;
   zN,yN,xN:double;
   x,y,z:mas;
   K:double;
@@ -75,7 +75,7 @@ procedure rkm(h0,x0,y0,z0:double;var xN,yN,zN:double);
 
 
 
-function G(zn:double):double;
+function G(zn:double);
 var m,n:INTEGER;
     ma:array[1..4,1..4] of DOUBLE;
     det,tmp_d1,tmp_d2,tmp_d3,tmp_d4:double;
@@ -88,13 +88,13 @@ for m := 1 to 4 do
   begin
     if (m = n) then 
       begin
-        {
+        
         ma[m,n]:= 1 - (h/4);
-        }
+        
       end
     else
       begin
-        {
+        
           ma[1,2]:= -1 * A2 * h;
           ma[1,3]:= -1 * 0.5 * h;
           ma[1,4]:= -2 * A2 * h;
@@ -111,17 +111,20 @@ for m := 1 to 4 do
           ma[4,2]:= ma[4,1];
           ma[4,3]:= m[3,4];
 
-        }    
+           
     end;
   //транспонирование матрицы
   for m := 1 to 4 do
   for  n:= 1 to 4 do
   begin
-  if(m <> n){
+  if(m <> n) then
+  begin
       ma[m,n]:= ma[n,m];
-  }
+
   end;
 
+  
+{
  tmp_d1:= ma[1,1]*(ma[2,2]*ma[3,3]*ma[4,4] + ma[2,3]*ma[3,4]*ma[4,2] + ma[2,4]+ma[3,2]+ma[4,3] - ma[2,4]*ma[3,3]*ma[4,2] - ma[2,2]*ma[3,4]*ma[4,3] - ma[4,4]*ma[2,3]*ma[3,2]);
  tmp_d2:= ma[1,2]*(ma[2,1]*ma[3,3]*ma[4,4] + ma[2,4]*ma[3,1]*ma[4,3] + ma[4,1]+ma[2,3]+ma[3,4] - ma[2,4]*ma[3,3]*ma[4,1] - ma[2,1]*ma[3,4]*ma[4,3] - ma[4,4]*ma[2,3]*ma[3,1]);
  tmp_d3:= ma[1,3]*(ma[2,1]*ma[3,2]*ma[4,4] + ma[2,4]*ma[3,1]*ma[4,2] + ma[4,1]+ma[2,2]+ma[3,4] - ma[2,4]*ma[3,2]*ma[4,1] - ma[2,1]*ma[3,4]*ma[4,2] - ma[4,4]*ma[2,2]*ma[3,1]);
@@ -130,6 +133,7 @@ for m := 1 to 4 do
  det:= tmp_d1-tmp_d2+tmp_d3-tmp_d4; // детерминант матрицы G
 
  G:=det;
+}
 
 END;
 
