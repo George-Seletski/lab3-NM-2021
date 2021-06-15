@@ -6,7 +6,7 @@ var
   k1_new,k2_new,l1_new,l2_new:double;
   p:double;
   A1,A2:double;
-  tmp_G:double;
+  tmp:array [1..4] of double;
   zN,yN,xN:double;
   x,y,z:mas;
   K:double;
@@ -78,7 +78,8 @@ procedure rkm(h0,x0,y0,z0:double;var xN,yN,zN:double);
 function G(zn:double);
 var m,n:INTEGER;
     ma:array[1..4,1..4] of DOUBLE;
-    det,tmp_d1,tmp_d2,tmp_d3,tmp_d4:double;
+    
+    //det,tmp_d1,tmp_d2,tmp_d3,tmp_d4:double;
     h:double;
    
 BEGIN //заполняем матрицу G
