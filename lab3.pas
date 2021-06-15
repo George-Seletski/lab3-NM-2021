@@ -133,8 +133,9 @@ END;
 
 procedure print(x,y,z:double);
 var i:integer;
-    eps:double =0.001;
+    eps:double;
 begin
+eps:=0.001;
   if(res<=eps)then
     begin
      // writeln(K[1]:10:4,'  ',K[2]:10:4,'  ',K[3]:10:4,' ' K[4]:10:4);
