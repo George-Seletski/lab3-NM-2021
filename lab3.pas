@@ -1,4 +1,4 @@
-﻿program lab3;
+﻿﻿program lab3;
 type mas=array [0..3]of double;
 var
   xBegin,yBegin,zBegin,xEnd,M:double;
@@ -20,32 +20,39 @@ function zPrime(x,y,z:double):double;
    zPrime:=2*y + z;
  end;
 
-procedure rkm(h0,x0,y0,z0,k1_new,k2_new,l1_new,l2_new:double;var xN,yN,zN:double);
-var k1,k2:double;
-    a1,a2,a3:double;
-    l1,l2:double;
-    h3:double;
-begin
-  a1:= ( (1/2) - (sqrt(3)/6) );
-  a2:= ( (1/4) - (sqrt(3)/6) );
-  a3:= 1/4;
-  h3:=h0/3;
+ procedure rkm(h0,x0,y0,z0,k1_new,k2_new,l1_new,l2_new:double;var xN,yN,zN:double);
+ var k1,k2:double;
+     a1,a2,a3:double;
+     l1,l2:double;
+     h3:double;
+ begin
+   a1:= ( (1/2) - (sqrt(3)/6) );
+   a2:= ( (1/4) - (sqrt(3)/6) );
+   a3:= 1/4;
+   h3:=h0/3;
 
-  k1:= yPrime(x0,y0,z0);
-  l1:= zPrime(x0,y0,z0);
-  k2:= yPrime(x0+h3,y0+h3*k1,z0+h3*l1);
-  l2:= zPrime(x0+h3,y0+h3*k1,z0+h3*l1);
+   k1:= yPrime(x0,y0,z0);
+   l1:= zPrime(x0,y0,z0);
+   k2:= yPrime(x0+h3,y0+h3*k1,z0+h3*l1);
+   l2:= zPrime(x0+h3,y0+h3*k1,z0+h3*l1); //scl
 
-  k1_new:= yPrime(x0+h0*a1, y0+h0*a3*k1+a2*h0*k2, z0+a3*h*l1+a2*h0*l2);
-  l1_new:= zPrime(x0+h0*a1, y0+h0*a3*k1+a2*h0*k2, z0+a3*h*l1+a2*h0*l2);
-  k2_new:= yPrime(x0+h0*a1, y0+h0*a2*k1+a3*h0*k2, z0+a2*h*l1+a3*h0*l2);
-  l1_new:= zPrime(x0+h0*a1, y0+h0*a3*k1+a2*h0*k2, z0+a3*h*l1+a2*h0*l2);
+   k1_new:= yPrime(x0+h0*a1, y0+h0*a3*k1+a2*h0*k2, z0+a3*h*l1+a2*h0*l2);
+   l1_new:= zPrime(x0+h0*a1, y0+h0*a3*k1+a2*h0*k2, z0+a3*h*l1+a2*h0*l2);
+   k2_new:= yPrime(x0+h0*a1, y0+h0*a2*k1+a3*h0*k2, z0+a2*h*l1+a3*h0*l2);
+   l1_new:= zPrime(x0+h0*a1, y0+h0*a3*k1+a2*h0*k2, z0+a3*h*l1+a2*h0*l2);
 
-  xN:=x0+h0;
-  yN:=(h0/2)*(k1_new+k2_new)+y0;
-  zN:=(h0/2)*(l1_new+l2_new)+z0;
+   xN:=x0+h0;
+   yN:=(h0/2)*(k1_new+k2_new)+y0;
+   zN:=(h0/2)*(l1_new+l2_new)+z0;
 
-end;
+
+   F[0]:=k1_new - k1;
+   F[1]:=k2_new - k2;
+   F[2]:=l1_new - l1;
+   F[3]:=l2_new - l2;
+ //////////////////
+ end;
+
 
 procedure kPrime();
 var
